@@ -1,5 +1,5 @@
 # Social Media App Client
-The frontend portion of a responsive social media application that works with Social Media App Server
+The frontend portion of a responsive social media application that works with Social Media App Server, independently created by Alex Lo
 
 # Features
 * Images uploaded to AWS S3 and also deleted from S3(when a post is deleted)
