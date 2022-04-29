@@ -2,7 +2,7 @@
 The frontend portion of a responsive social media application that works with Social Media App Server, independently created by Alex Lo
 
 # Features
-* Images uploaded to AWS S3 and also deleted from S3(when a post is deleted)
+* Images uploaded to AWS S3 and also deleted from S3 (when a post is deleted)
 * User authentication and authorization
 * Create, edit, and delete your posts
 * Write, edit, and delete your comments on posts
