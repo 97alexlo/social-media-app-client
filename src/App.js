@@ -27,6 +27,7 @@ function App() {
           setUid(res.data);
         })
         .catch((err) => {
+          console.log(err)
           console.log("No token");
         });
     };
