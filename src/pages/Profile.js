@@ -9,7 +9,7 @@ import { uploadPicture, updateBio } from "../actions/user.actions.js";
 import { getUserPosts } from "../actions/post.actions.js";
 import { dateParser } from "../components/Utils.js";
 import Modal from "react-bootstrap/Modal";
-import Table from "react-bootstrap/table";
+import Table from "react-bootstrap/Table";
 import FollowHandler from "../components/FollowHandler.js";
 import { Link } from "react-router-dom";
 import { isEmpty } from "../components/Utils.js";
