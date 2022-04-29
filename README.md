@@ -12,6 +12,7 @@ The frontend portion of a responsive social media application that works with So
 * Edit your profile picture and bio
 
 # Built with
+* JavaScript
 * React
 * Redux
 * Bootstrap
