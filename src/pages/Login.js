@@ -8,9 +8,12 @@ import { Link } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [signInLoading, setIsSignInLoading] = useState(false);
+  const [signInGuestLoading, setIsSignInGuestLoading] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setIsSignInLoading(true);
     const emailError = document.querySelector(".email-error");
     const passwordError = document.querySelector(".password-error");
 
@@ -26,6 +29,7 @@ function Login() {
       .then((res) => {
         console.log(res);
         if (res.data.errors) {
+          setIsSignInLoading(false);
           emailError.innerHTML = res.data.errors.email;
           passwordError.innerHTML = res.data.errors.password;
         } else {
@@ -33,12 +37,14 @@ function Login() {
         }
       })
       .catch((err) => {
+        setIsSignInLoading(false);
         console.log(err);
       });
   };
 
   function signInAsGuest(e) {
     e.preventDefault();
+    setIsSignInGuestLoading(true);
     const emailError = document.querySelector(".email-error");
     const passwordError = document.querySelector(".password-error");
 
@@ -61,6 +67,7 @@ function Login() {
         }
       })
       .catch((err) => {
+        setIsSignInGuestLoading(false);
         console.log(err);
       });
   }
@@ -95,16 +102,32 @@ function Login() {
               <Form.Text className="password-error"></Form.Text>
             </Form.Group>
             <div className="btn-link">
-              <Button variant="primary" type="submit">
-                Sign in
-              </Button>
-              <Button
-                onClick={(e) => signInAsGuest(e)}
-                style={{ marginTop: ".5em"}}
-                variant="success"
-              >
-                Sign in as guest
-              </Button>
+              {signInLoading === false ? (
+                <Button variant="primary" type="submit">
+                  Sign in
+                </Button>
+              ) : (
+                <Button disabled variant="primary" type="submit">
+                  Loading... (takes a few seconds)
+                </Button>
+              )}
+              {signInGuestLoading === false ? (
+                <Button
+                  onClick={(e) => signInAsGuest(e)}
+                  style={{ marginTop: ".5em" }}
+                  variant="success"
+                >
+                  Sign in as guest
+                </Button>
+              ) : (
+                <Button
+                  disabled
+                  style={{ marginTop: ".5em" }}
+                  variant="success"
+                >
+                  Loading... (Takes a few seconds)
+                </Button>
+              )}
               <Form.Text className="link-to-register">
                 <Link to="/register">Don't have an account? Sign up here</Link>
               </Form.Text>
