@@ -125,7 +125,7 @@ function Login() {
                   style={{ marginTop: ".5em" }}
                   variant="success"
                 >
-                  Loading... (Takes a few seconds)
+                  Loading... (takes ~10 seconds)
                 </Button>
               )}
               <Form.Text className="link-to-register">
