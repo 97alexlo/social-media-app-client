@@ -108,7 +108,7 @@ function Login() {
                 </Button>
               ) : (
                 <Button disabled variant="primary" type="submit">
-                  Loading... (takes a few seconds)
+                  Loading... (takes ~10 seconds)
                 </Button>
               )}
               {signInGuestLoading === false ? (
