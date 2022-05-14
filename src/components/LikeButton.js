@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { likePost, unlikePost } from "../actions/post.actions.js";
 import { FcLike } from "react-icons/fc";
 import { HiOutlineHeart } from "react-icons/hi";
+import { UidContext } from "./Context.js";
 
 function LikeButton({ post }) {
   const [liked, setLiked] = useState(false);
-  const uid = localStorage.getItem("uid");
+  const uid = useContext(UidContext);
   const dispatch = useDispatch();
 
   const like = () => {

@@ -15,7 +15,7 @@ import OtherProfile from "./pages/OtherProfile";
 function App() {
   const [uid, setUid] = useState(null);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     const fetchToken = async () => {
       axios({
@@ -27,7 +27,7 @@ function App() {
           setUid(res.data);
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           console.log("No token");
         });
     };
@@ -35,7 +35,7 @@ function App() {
   }, [uid, dispatch]);
 
   if (uid !== null) {
-    localStorage.setItem("uid", uid)
+    localStorage.setItem("uid", uid);
     dispatch(getUser(uid));
   }
 
@@ -46,24 +46,25 @@ function App() {
         <NavMenu />
         <div className="wrapper">
           <main>
-            <Routes>
-              <Route exact path="/" element={uid ? <Home /> : <Login />} />
-              <Route exact path="/login" element={uid ? <Home /> : <Login />} />
-              <Route
-                exact
-                path="/register"
-                element={uid ? <Home /> : <Register />}
-              />
-              <Route
-                exact path="/profile"
-                element={uid ? <Profile /> : <Login />}
-              />
-              <Route
-                path="/user-profile/:userId"
-                element={uid ? <OtherProfile /> : <Login />}
-              />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            {uid ? (
+              <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route exact path="/login" element={<Home />} />
+                <Route exact path="/register" element={<Home />} />
+                <Route exact path="/profile" element={<Profile />} />
+                <Route
+                  path="/user-profile/:userId"
+                  element={<OtherProfile />}
+                />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            ) : (
+              <Routes>
+                <Route exact path="/login" element={<Login />} />
+                <Route exact path="/register" element={<Register />} />
+                <Route exact path="*" element={<Login />} />
+              </Routes>
+            )}
           </main>
         </div>
       </BrowserRouter>

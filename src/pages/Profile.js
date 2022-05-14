@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
@@ -18,6 +18,7 @@ import PaginationComponent from "../components/PaginationComponent.js";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
 import NewPostForm from "../components/NewPostForm.js";
+import { UidContext } from "../components/Context.js";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -29,10 +30,15 @@ function Profile() {
   const [updateForm, setUpdateForm] = useState(false);
   const [followingPopup, setFollowingPopup] = useState(false);
   const [followersPopup, setFollowersPopup] = useState(false);
+  const uid = useContext(UidContext);
 
   useEffect(() => {
-    dispatch(getUserPosts(localStorage.getItem("uid"), 1));
-  }, [dispatch]);
+    if (uid !== null) {
+      dispatch(getUserPosts(uid, 1));
+    } else {
+      dispatch(getUserPosts(uid, 1));
+    }
+  }, [dispatch, uid]);
 
   function handleClose() {
     setFollowersPopup(false);
@@ -211,7 +217,7 @@ function Profile() {
         </ListGroup>
       </Card>
       <div className="profile-posts">
-      <NewPostForm />
+        <NewPostForm />
         {/* {!isEmpty(posts) && (
           <span style={{ fontWeight: "bold", fontSize: "large" }}>
             {userData.username}'s posts
@@ -226,10 +232,7 @@ function Profile() {
             );
           })}
         {posts.totalPages > 1 && (
-          <PaginationComponent
-            profile={true}
-            uid={localStorage.getItem("uid")}
-          />
+          <PaginationComponent profile={true} uid={uid} />
         )}
       </div>
       <Modal scrollable centered show={followersPopup} onHide={handleClose}>

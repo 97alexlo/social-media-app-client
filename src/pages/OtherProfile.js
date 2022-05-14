@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
@@ -12,24 +12,21 @@ import { isEmpty } from "../components/Utils.js";
 import { useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard.js";
 import PaginationComponent from "../components/PaginationComponent.js";
+import { UidContext } from "../components/Context.js";
 
 function OtherProfile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.postReducer);
   const [otherUserData, setOtherUserData] = useState({});
+  const uid = useContext(UidContext);
 
   const { userId } = useParams();
 
   useEffect(() => {
     async function checkuser() {
       try {
-        // const res = await axios({
-        //   method: "get",
-        //   url: `${process.env.REACT_APP_API_URL}jwtid`,
-        //   withCredentials: true,
-        // });
-        if (localStorage.getItem("uid") === userId) {
+        if (uid === userId) {
           navigate("/profile", { replace: true });
         } else {
           const res = await axios({
@@ -48,7 +45,7 @@ function OtherProfile() {
       }
     }
     checkuser();
-  }, [dispatch, navigate, userId]);
+  }, [dispatch, navigate, uid, userId]);
 
   return (
     <div className="profile-container">

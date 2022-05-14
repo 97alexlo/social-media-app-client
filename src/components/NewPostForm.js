@@ -31,7 +31,7 @@ function NewPostForm() {
       cancelImage();
       setMessage("");
     } else {
-      alert("Veuillez entrer un message");
+      alert("Please enter message");
     }
   };
 

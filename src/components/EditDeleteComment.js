@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteComment, editComment } from "../actions/post.actions";
 import Form from "react-bootstrap/Form";
@@ -8,6 +8,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
 import { Card } from "react-bootstrap";
 import { Alert } from "react-bootstrap";
+import { UidContext } from "./Context";
 
 function EditDeleteComment({ comment, postId }) {
   const [isAuthor, setIsAuthor] = useState(false);
@@ -15,7 +16,7 @@ function EditDeleteComment({ comment, postId }) {
   const [edit, setEdit] = useState(false);
   const [text, setText] = useState("");
   const dispatch = useDispatch();
-
+  const uid = useContext(UidContext);
   const handleEditComment = (e) => {
     e.preventDefault();
 
@@ -32,12 +33,15 @@ function EditDeleteComment({ comment, postId }) {
 
   useEffect(() => {
     const checkAuthor = () => {
-      if (localStorage.getItem("uid") === comment.commenterId) {
+      if (uid === comment.commenterId) {
+        setIsAuthor(true);
+      } else if (localStorage.getItem("uid") === comment.commenterId) {
+        console.log("checking user id from local storage");
         setIsAuthor(true);
       }
     };
     checkAuthor();
-  }, [comment.commenterId]);
+  }, [comment.commenterId, uid]);
 
   return (
     <div>

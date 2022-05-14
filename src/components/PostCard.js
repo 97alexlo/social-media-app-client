@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 import { isEmpty } from "./Utils";
@@ -18,6 +18,7 @@ import { updatePost, deletePost } from "../actions/post.actions";
 import { Alert } from "react-bootstrap";
 import Comments from "./Comments";
 import { FaCheck } from "react-icons/fa";
+import { UidContext } from "./Context";
 
 function PostCard({ post }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,6 +28,7 @@ function PostCard({ post }) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const dispatch = useDispatch();
   const usersData = useSelector((state) => state.usersReducer);
+  const uid = useContext(UidContext);
   // const userData = useSelector((state) => state.usersReducer);
   // const posts = useSelector((state) => state.postReducer);
 
@@ -98,12 +100,12 @@ function PostCard({ post }) {
               </span>
               <span style={{ marginLeft: "auto", order: "2" }}>
                 <TimeAgo className="text-muted" date={post.createdAt} />
-                {post.posterId !== localStorage.getItem("uid") && (
+                {post.posterId !== uid && (
                   <FollowHandler idToFollow={post.posterId} type={"card"} />
                 )}
               </span>
             </Card.Header>
-            {post.posterId === localStorage.getItem("uid") && (
+            {post.posterId === uid && (
               <Card.Body
                 className="d-flex align-items-center justify-content-end pt-1 pb-1"
                 style={{
@@ -144,13 +146,13 @@ function PostCard({ post }) {
               </Card.Body>
             )}
             <Card.Body className="pt-2">
-              {post.posterId === localStorage.getItem("uid") &&
+              {post.posterId === uid &&
                 isUpdated === false && (
                   <Card.Text className="mb-2" style={{ marginTop: "-15px" }}>
                     {post.message}
                   </Card.Text>
                 )}
-              {post.posterId === localStorage.getItem("uid") &&
+              {post.posterId === uid &&
                 isUpdated === true && (
                   <div
                     style={{
@@ -169,7 +171,7 @@ function PostCard({ post }) {
                     </Form.Group>
                   </div>
                 )}
-              {post.posterId === localStorage.getItem("uid") &&
+              {post.posterId === uid &&
                 showDeleteConfirm && (
                   <Alert
                     variant="danger"
@@ -185,7 +187,7 @@ function PostCard({ post }) {
                     </div>
                   </Alert>
                 )}
-              {post.posterId !== localStorage.getItem("uid") && (
+              {post.posterId !== uid && (
                 <Card.Text>{post.message}</Card.Text>
               )}
               <span style={{ display: "flex" }}>

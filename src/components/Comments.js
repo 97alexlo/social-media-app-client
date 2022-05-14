@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Card from "react-bootstrap/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { addComment, getPosts } from "../actions/post.actions.js";
 import EditDeleteComment from "./EditDeleteComment.js";
+import { UidContext } from "./Context.js";
 
 function Comments({ post }) {
   const [postACommentText, setPostACommentText] = useState("");
@@ -17,7 +18,7 @@ function Comments({ post }) {
   const usersData = useSelector((state) => state.usersReducer);
   const userData = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
-  //console.log(post);
+  const uid = useContext(UidContext);
 
   function handlePostComment(e) {
     e.preventDefault();
@@ -70,7 +71,7 @@ function Comments({ post }) {
                 </Link>
                 <span style={{ marginLeft: "auto", order: "2" }}>
                   <TimeAgo className="text-muted" date={comment.timestamp} />
-                  {comment.commenterId !== localStorage.getItem("uid") && (
+                  {comment.commenterId !== uid && (
                     <FollowHandler
                       idToFollow={comment.commenterId}
                       type={"card"}
@@ -78,7 +79,7 @@ function Comments({ post }) {
                   )}
                 </span>
               </Card.Text>
-              {comment.commenterId !== localStorage.getItem("uid") &&
+              {comment.commenterId !== uid &&
               <Card.Text className="mb-0">{comment.text}</Card.Text>
         }
               <EditDeleteComment comment={comment} postId={post._id} />
@@ -94,7 +95,7 @@ function Comments({ post }) {
                 !isEmpty(usersData[0]) &&
                 usersData
                   .map((user) => {
-                    if (user._id === localStorage.getItem("uid")) {
+                    if (user._id === uid) {
                       return user.picture;
                     } else {
                       return null;
