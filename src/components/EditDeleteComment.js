@@ -35,10 +35,11 @@ function EditDeleteComment({ comment, postId }) {
     const checkAuthor = () => {
       if (uid === comment.commenterId) {
         setIsAuthor(true);
-      } else if (localStorage.getItem("uid") === comment.commenterId) {
-        console.log("checking user id from local storage");
-        setIsAuthor(true);
       }
+      // else if (localStorage.getItem("uid") === comment.commenterId) {
+      //   console.log("checking user id from local storage");
+      //   setIsAuthor(true);
+      // }
     };
     checkAuthor();
   }, [comment.commenterId, uid]);

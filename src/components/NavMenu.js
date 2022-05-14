@@ -34,7 +34,7 @@ function NavMenu() {
   }
 
   const handleSignout = async () => {
-    localStorage.clear();
+    //localStorage.clear();
     toggleNavCollapse();
     await axios({
       method: "get",
@@ -44,7 +44,7 @@ function NavMenu() {
       .then(() => removeCookie("jwt"))
       .catch((err) => console.log(err));
 
-    // reloads page and checks for jwt, when there is no jwt, there is no uid which means the buttons will also change
+    // reloads page and checks for jwt, when there is no jwt, there is no uid which means the navbar buttons will also change
     window.location = "/login";
   };
 

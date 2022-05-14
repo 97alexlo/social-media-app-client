@@ -11,9 +11,17 @@ function Login() {
   const [signInLoading, setIsSignInLoading] = useState(false);
   const [signInGuestLoading, setIsSignInGuestLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const checkSignIn = (loginAsGuest) => {
+    if (loginAsGuest) {
+      setIsSignInGuestLoading(!signInGuestLoading);
+    } else {
+      setIsSignInLoading(!signInLoading);
+    }
+  }
+
+  const handleLogin = (e, loginAsGuest) => {
     e.preventDefault();
-    setIsSignInLoading(true);
+    checkSignIn(loginAsGuest)
     const emailError = document.querySelector(".email-error");
     const passwordError = document.querySelector(".password-error");
 
@@ -22,14 +30,14 @@ function Login() {
       url: `${process.env.REACT_APP_API_URL}api/user/login`,
       withCredentials: true,
       data: {
-        email,
-        password,
+        email: loginAsGuest ? "alex@gmail.com" : email,
+        password: loginAsGuest ? "123456" : password,
       },
     })
       .then((res) => {
         console.log(res);
         if (res.data.errors) {
-          setIsSignInLoading(false);
+          checkSignIn(loginAsGuest)
           emailError.innerHTML = res.data.errors.email;
           passwordError.innerHTML = res.data.errors.password;
         } else {
@@ -37,40 +45,10 @@ function Login() {
         }
       })
       .catch((err) => {
-        setIsSignInLoading(false);
+        checkSignIn(loginAsGuest)
         console.log(err);
       });
   };
-
-  function signInAsGuest(e) {
-    e.preventDefault();
-    setIsSignInGuestLoading(true);
-    const emailError = document.querySelector(".email-error");
-    const passwordError = document.querySelector(".password-error");
-
-    axios({
-      method: "post",
-      url: `${process.env.REACT_APP_API_URL}api/user/login`,
-      withCredentials: true,
-      data: {
-        email: "alex@gmail.com",
-        password: "123456",
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.data.errors) {
-          emailError.innerHTML = res.data.errors.email;
-          passwordError.innerHTML = res.data.errors.password;
-        } else {
-          window.location = "/";
-        }
-      })
-      .catch((err) => {
-        setIsSignInGuestLoading(false);
-        console.log(err);
-      });
-  }
 
   return (
     <div className="login-container">
@@ -79,7 +57,7 @@ function Login() {
           Sign in
         </Card.Header>
         <Card.Body>
-          <Form onSubmit={handleLogin} className="loginForm">
+          <Form onSubmit={(e) => handleLogin(e, false)} className="loginForm">
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -113,7 +91,7 @@ function Login() {
               )}
               {signInGuestLoading === false ? (
                 <Button
-                  onClick={(e) => signInAsGuest(e)}
+                  onClick={(e) => handleLogin(e, true)}
                   style={{ marginTop: ".5em" }}
                   variant="success"
                 >

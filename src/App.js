@@ -35,7 +35,7 @@ function App() {
   }, [uid, dispatch]);
 
   if (uid !== null) {
-    localStorage.setItem("uid", uid);
+    //localStorage.setItem("uid", uid);
     dispatch(getUser(uid));
   }
 
