@@ -49,6 +49,7 @@ function Register() {
         .catch((err) => console.log(err));
     }
   };
+
   return (
     <div className="login-container">
       <Card className="login-card">

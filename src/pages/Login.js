@@ -17,11 +17,11 @@ function Login() {
     } else {
       setIsSignInLoading(!signInLoading);
     }
-  }
+  };
 
   const handleLogin = (e, loginAsGuest) => {
     e.preventDefault();
-    checkSignIn(loginAsGuest)
+    checkSignIn(loginAsGuest);
     const emailError = document.querySelector(".email-error");
     const passwordError = document.querySelector(".password-error");
 
@@ -37,7 +37,7 @@ function Login() {
       .then((res) => {
         console.log(res);
         if (res.data.errors) {
-          checkSignIn(loginAsGuest)
+          checkSignIn(loginAsGuest);
           emailError.innerHTML = res.data.errors.email;
           passwordError.innerHTML = res.data.errors.password;
         } else {
@@ -45,7 +45,7 @@ function Login() {
         }
       })
       .catch((err) => {
-        checkSignIn(loginAsGuest)
+        checkSignIn(loginAsGuest);
         console.log(err);
       });
   };

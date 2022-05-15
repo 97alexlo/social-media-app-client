@@ -3,25 +3,28 @@ import { Pagination } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts, getUserPosts } from "../actions/post.actions";
 
-function PaginationComponent({profile, uid}) {
+function PaginationComponent({ profile, uid }) {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.postReducer);
-  const [userId, setUserId] = useState("")
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    if(profile === false) {
+    if (profile === false) {
       dispatch(getPosts(page));
     } else {
-      if(userId === "") {
-        setUserId(uid)
+      if (userId === "") {
+        setUserId(uid);
       }
-      dispatch(getUserPosts(userId, page))
+      dispatch(getUserPosts(userId, page));
     }
   }, [dispatch, page, profile, uid, userId]);
 
   function handleNext() {
     setPage((p) => {
+      if(p === posts.totalPages) {
+        return p;
+      }
       return p + 1;
     });
   }

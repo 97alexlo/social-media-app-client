@@ -35,9 +35,7 @@ function Profile() {
   useEffect(() => {
     if (uid !== null) {
       dispatch(getUserPosts(uid, 1));
-    } else {
-      dispatch(getUserPosts(uid, 1));
-    }
+    } 
   }, [dispatch, uid]);
 
   function handleClose() {
