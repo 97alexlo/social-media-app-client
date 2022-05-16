@@ -24,6 +24,7 @@ function App() {
         withCredentials: true,
       })
         .then((res) => {
+          dispatch(getUser(res.data));
           setUid(res.data);
         })
         .catch((err) => {
@@ -34,10 +35,9 @@ function App() {
     fetchToken();
   }, [uid, dispatch]);
 
-  if (uid !== null) {
-    //localStorage.setItem("uid", uid);
-    dispatch(getUser(uid));
-  }
+  // if (uid !== null) {
+  //   dispatch(getUser(uid));
+  // }
 
   return (
     // pass user id to all the pages once logged in
