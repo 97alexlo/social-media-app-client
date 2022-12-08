@@ -242,7 +242,7 @@ function Profile() {
             <Table striped bordered>
               <tbody>
                 {userData.followers &&
-                  usersData.map((user) => {
+                  Array.from(usersData).map((user) => {
                     for (let i = 0; i < userData.followers.length; i++) {
                       if (user._id === userData.followers[i]) {
                         return (
