@@ -1,4 +1,4 @@
-import React, { useEffect }from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { isEmpty } from "../components/Utils";
 import PostCard from "../components/PostCard";
@@ -11,9 +11,9 @@ function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-      dispatch(getPosts(1))
-  }, [dispatch])
-  
+    dispatch(getPosts(1));
+  }, [dispatch]);
+
   return (
     <div className="home-container">
       <NewPostForm />
