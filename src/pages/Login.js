@@ -46,6 +46,8 @@ function Login() {
       })
       .catch((err) => {
         checkSignIn(loginAsGuest);
+        setIsSignInGuestLoading(false);
+        setIsSignInLoading(false);
         console.log(err);
       });
   };
