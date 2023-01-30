@@ -18,43 +18,66 @@ function Login() {
       setIsSignInLoading(!signInLoading);
     }
   };
+  
+  const setEmptyFieldsError = () => {
+    const emailError = document.querySelector(".email-error");
+    const passwordError = document.querySelector(".password-error");
+ 
+    if (email.length === 0 && password.length === 0) {
+      emailError.innerHTML = "Please enter an email"
+      passwordError.innerHTML =  "Please enter a password"
+      return true
+    } else if (email.length === 0) {
+      emailError.innerHTML = "Please enter an email"
+      return true
+    } else if (password.length === 0){
+      passwordError.innerHTML = "Please enter a password"
+      return true
+    }
+    return false
+  }
 
-  const toggleSignInText = () => {
+  const resetLoginButtonText = () => {
     setIsSignInGuestLoading(false);
     setIsSignInLoading(false);
   }
-
+  
   const handleLogin = (e, loginAsGuest) => {
     e.preventDefault();
     checkSignIn(loginAsGuest);
     const emailError = document.querySelector(".email-error");
     const passwordError = document.querySelector(".password-error");
 
-    axios({
-      method: "post",
-      url: `${process.env.REACT_APP_API_URL}api/user/login`,
-      withCredentials: true,
-      data: {
-        email: loginAsGuest ? "alex@gmail.com" : email,
-        password: loginAsGuest ? "123456" : password,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.data.errors) {
-          checkSignIn(loginAsGuest);
-          emailError.innerHTML = res.data.errors.email;
-          passwordError.innerHTML = res.data.errors.password;
-          toggleSignInText()
-        } else {
-          window.location = "/";
-        }
+    let isEmpty = setEmptyFieldsError()
+    if (!isEmpty) {
+      axios({
+        method: "post",
+        url: `${process.env.REACT_APP_API_URL}api/user/login`,
+        withCredentials: true,
+        data: {
+          email: loginAsGuest ? "alex@gmail.com" : email,
+          password: loginAsGuest ? "123456" : password,
+        },
       })
-      .catch((err) => {
-        checkSignIn(loginAsGuest);
-        toggleSignInText()
-        console.log(err);
-      });
+        .then((res) => {
+          console.log(res);
+          if (res.data.errors) {
+            checkSignIn(loginAsGuest);
+            emailError.innerHTML = res.data.errors.email;
+            passwordError.innerHTML = res.data.errors.password;
+            resetLoginButtonText()
+          } else {
+            window.location = "/";
+          }
+        })
+        .catch((err) => {
+          checkSignIn(loginAsGuest);
+          resetLoginButtonText()
+          console.log(err);
+        });
+    } else {
+      resetLoginButtonText()
+    }
   };
 
   return (
