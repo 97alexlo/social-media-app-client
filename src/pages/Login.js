@@ -22,16 +22,17 @@ function Login() {
   const setEmptyFieldsError = () => {
     const emailError = document.querySelector(".email-error");
     const passwordError = document.querySelector(".password-error");
- 
-    if (email.length === 0 && password.length === 0) {
+    
+    var error = 0;
+
+    if (email.length === 0) {
       emailError.innerHTML = "Please enter an email"
-      passwordError.innerHTML =  "Please enter a password"
-      return true
-    } else if (email.length === 0) {
-      emailError.innerHTML = "Please enter an email"
-      return true
+      error++
     } else if (password.length === 0){
       passwordError.innerHTML = "Please enter a password"
+      error++
+    }
+    if (error > 0) {
       return true
     }
     return false
@@ -41,7 +42,7 @@ function Login() {
     setIsSignInGuestLoading(false);
     setIsSignInLoading(false);
   }
-  
+
   const handleLogin = (e, loginAsGuest) => {
     e.preventDefault();
     checkSignIn(loginAsGuest);

@@ -12,6 +12,41 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [accountCreated, setAccountCreated] = useState(false);
 
+  const setInputFieldsErrorMsg = () => {
+    const usernameError = document.querySelector(".username-error");
+    const emailError = document.querySelector(".email-error");
+    const passwordError = document.querySelector(".password-error");
+    const confirmPasswordError = document.querySelector(
+      ".password-confirm-error"
+    );
+    var error = 0;
+
+    if (username.length === 0) {
+      usernameError.innerHTML = "Please enter a username";
+      error++
+    } 
+    if (email.length === 0) {
+      emailError.innerHTML = "Please enter an email";
+      error++
+    } 
+    if (password.length === 0) {
+      passwordError.innerHTML = "Please enter a password";
+      error++
+    } 
+    if (confirmPassword.length === 0) {
+      confirmPasswordError.innerHTML = "Please confirm your password";
+      error++
+    }
+    if (password !== confirmPassword) {
+      confirmPasswordError.innerHTML = "Passwords do not match";
+      error++
+    }
+    if (error > 0) {
+      return true
+    }
+    return false
+  }
+
   const handleRegister = async (e) => {
     e.preventDefault();
     const usernameError = document.querySelector(".username-error");
@@ -22,11 +57,11 @@ function Register() {
     );
     usernameError.innerHTML = "";
     emailError.innerHTML = "";
+    passwordError.innerHTML = "";
     confirmPasswordError.innerHTML = "";
-
-    if (password !== confirmPassword) {
-      confirmPasswordError.innerHTML = "Passwords do not match";
-    } else {
+    
+    var hasErrors = setInputFieldsErrorMsg()
+    if (!hasErrors) {
       await axios({
         method: "post",
         url: `${process.env.REACT_APP_API_URL}api/user/register`,
