@@ -48,7 +48,7 @@
 .password-error,
 .username-error,
 .password-confirm-error {
-  color: red;
+  color: rgb(219, 24, 24);
 }
 
 .btn-link {
