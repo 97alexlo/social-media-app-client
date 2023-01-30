@@ -23,7 +23,9 @@ const FollowHandler = ({ idToFollow, type }) => {
     if (!isEmpty(userData.following)) {
       if (userData.following.includes(idToFollow)) {
         setIsFollowed(true);
-      } else setIsFollowed(false);
+      } else {
+        setIsFollowed(false);
+      }
     }
   }, [userData, idToFollow]);
 

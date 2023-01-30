@@ -19,6 +19,11 @@ function Login() {
     }
   };
 
+  const toggleSignInText = () => {
+    setIsSignInGuestLoading(false);
+    setIsSignInLoading(false);
+  }
+
   const handleLogin = (e, loginAsGuest) => {
     e.preventDefault();
     checkSignIn(loginAsGuest);
@@ -40,14 +45,14 @@ function Login() {
           checkSignIn(loginAsGuest);
           emailError.innerHTML = res.data.errors.email;
           passwordError.innerHTML = res.data.errors.password;
+          toggleSignInText()
         } else {
           window.location = "/";
         }
       })
       .catch((err) => {
         checkSignIn(loginAsGuest);
-        setIsSignInGuestLoading(!signInGuestLoading);
-        setIsSignInLoading(!signInLoading);
+        toggleSignInText()
         console.log(err);
       });
   };
