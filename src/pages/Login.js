@@ -10,8 +10,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [signInLoading, setIsSignInLoading] = useState(false);
   const [signInGuestLoading, setIsSignInGuestLoading] = useState(false);
-  const emailError = document.querySelector(".email-error");
-  const passwordError = document.querySelector(".password-error");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   
   const checkSignIn = (loginAsGuest) => {
     if (loginAsGuest) {
@@ -22,15 +22,20 @@ function Login() {
   };
 
   const setEmptyFieldsError = () => {
-    let error = 0;
+    let emptyErrors = 0;
     if (email.length === 0) {
-      emailError.innerHTML = "Please enter an email"
-      error++
-    } else if (password.length === 0) {
-      passwordError.innerHTML = "Please enter a password"
-      error++
+      setEmailError("Please enter an email")
+      emptyErrors++;
+    } else {
+      setEmailError("")
     }
-    if (error > 0) {
+    if (password.length === 0) {
+      setPasswordError("Please enter a password")
+      emptyErrors++;
+    } else {
+      setPasswordError("")
+    }
+    if (emptyErrors > 0) {
       return true
     }
     return false
@@ -51,7 +56,8 @@ function Login() {
     if (!loginAsGuest) {
       isEmpty = setEmptyFieldsError()
     }
-
+    console.log("guest?", loginAsGuest)
+    console.log(isEmpty)
     if (loginAsGuest || (!isEmpty && !loginAsGuest)) {
       axios({
         method: "post",
@@ -66,8 +72,8 @@ function Login() {
           console.log(res);
           if (res.data.errors) {
             checkSignIn(loginAsGuest);
-            emailError.innerHTML = res.data.errors.email;
-            passwordError.innerHTML = res.data.errors.password;
+            setEmailError(res.data.errors.email);
+            setPasswordError(res.data.errors.password);
             resetLoginButtonText()
           } else {
             window.location = "/";
@@ -98,7 +104,7 @@ function Login() {
                 type="email"
                 placeholder="Enter your email"
               />
-              <Form.Text className="email-error"></Form.Text>
+              <Form.Text className="email-error">{emailError.length > 0 && emailError}</Form.Text>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
@@ -109,7 +115,7 @@ function Login() {
                 placeholder="Password"
                 autoComplete="on"
               />
-              <Form.Text className="password-error"></Form.Text>
+              <Form.Text className="password-error">{passwordError.length > 0 && passwordError}</Form.Text>
             </Form.Group>
             <div className="btn-link">
               {signInLoading === false ? (
