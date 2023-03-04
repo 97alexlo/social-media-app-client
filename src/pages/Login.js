@@ -56,8 +56,7 @@ function Login() {
     if (!loginAsGuest) {
       isEmpty = setEmptyFieldsError()
     }
-    console.log("guest?", loginAsGuest)
-    console.log(isEmpty)
+    
     if (loginAsGuest || (!isEmpty && !loginAsGuest)) {
       axios({
         method: "post",
