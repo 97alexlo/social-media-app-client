@@ -10,7 +10,9 @@ function Login() {
   const [password, setPassword] = useState("");
   const [signInLoading, setIsSignInLoading] = useState(false);
   const [signInGuestLoading, setIsSignInGuestLoading] = useState(false);
-
+  const emailError = document.querySelector(".email-error");
+  const passwordError = document.querySelector(".password-error");
+  
   const checkSignIn = (loginAsGuest) => {
     if (loginAsGuest) {
       setIsSignInGuestLoading(!signInGuestLoading);
@@ -18,17 +20,13 @@ function Login() {
       setIsSignInLoading(!signInLoading);
     }
   };
-  
-  const setEmptyFieldsError = () => {
-    const emailError = document.querySelector(".email-error");
-    const passwordError = document.querySelector(".password-error");
-    
-    var error = 0;
 
+  const setEmptyFieldsError = () => {
+    let error = 0;
     if (email.length === 0) {
       emailError.innerHTML = "Please enter an email"
       error++
-    } else if (password.length === 0){
+    } else if (password.length === 0) {
       passwordError.innerHTML = "Please enter a password"
       error++
     }
@@ -49,15 +47,19 @@ function Login() {
     const emailError = document.querySelector(".email-error");
     const passwordError = document.querySelector(".password-error");
 
-    let isEmpty = setEmptyFieldsError()
-    if (!isEmpty) {
+    let isEmpty = false;
+    if (!loginAsGuest) {
+      isEmpty = setEmptyFieldsError()
+    }
+
+    if (loginAsGuest || (!isEmpty && !loginAsGuest)) {
       axios({
         method: "post",
         url: `${process.env.REACT_APP_API_URL}api/user/login`,
         withCredentials: true,
         data: {
-          email: loginAsGuest ? "alex@gmail.com" : email,
-          password: loginAsGuest ? "123456" : password,
+          email: loginAsGuest ? "alex@gmail.com" : !isEmpty && email,
+          password: loginAsGuest ? "123456" : !isEmpty && password,
         },
       })
         .then((res) => {
@@ -76,9 +78,8 @@ function Login() {
           resetLoginButtonText()
           console.log(err);
         });
-    } else {
-      resetLoginButtonText()
     }
+    resetLoginButtonText()
   };
 
   return (
