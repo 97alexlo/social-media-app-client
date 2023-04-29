@@ -15,9 +15,9 @@ function Login() {
   
   const checkSignIn = (loginAsGuest) => {
     if (loginAsGuest) {
-      setIsSignInGuestLoading(!signInGuestLoading);
+      setIsSignInGuestLoading(true);
     } else {
-      setIsSignInLoading(!signInLoading);
+      setIsSignInLoading(true);
     }
   };
 
@@ -42,8 +42,8 @@ function Login() {
   }
 
   const resetLoginButtonText = () => {
-    setIsSignInGuestLoading(false);
-    setIsSignInLoading(false);
+    setIsSignInGuestLoading(() => false);
+    setIsSignInLoading(() => false);
   }
 
   const handleLogin = (e, loginAsGuest) => {
@@ -54,7 +54,7 @@ function Login() {
     if (!loginAsGuest) {
       isEmpty = setEmptyFieldsError()
     }
-    
+
     if (loginAsGuest || (!isEmpty && !loginAsGuest)) {
       axios({
         method: "post",
@@ -66,10 +66,8 @@ function Login() {
         },
       })
         .then((res) => {
-          setIsSignInGuestLoading(true)
           console.log(res);
           if (res.data.errors) {
-            checkSignIn(loginAsGuest);
             setEmailError(res.data.errors.email);
             setPasswordError(res.data.errors.password);
             resetLoginButtonText()
@@ -78,12 +76,12 @@ function Login() {
           }
         })
         .catch((err) => {
-          checkSignIn(loginAsGuest);
           resetLoginButtonText()
           console.log(err);
         });
+    } else {
+      resetLoginButtonText()
     }
-    return resetLoginButtonText()
   };
 
   return (
@@ -116,32 +114,20 @@ function Login() {
               <Form.Text className="password-error">{passwordError.length > 0 && passwordError}</Form.Text>
             </Form.Group>
             <div className="btn-link">
-              {signInLoading === false ? (
-                <Button variant="primary" type="submit">
-                  Sign in
-                </Button>
-              ) : (
-                <Button disabled variant="primary" type="submit">
-                  Loading... (takes ~10 seconds)
-                </Button>
-              )}
-              {signInGuestLoading === false ? (
-                <Button
-                  onClick={(e) => handleLogin(e, true)}
-                  style={{ marginTop: ".5em" }}
-                  variant="success"
-                >
-                  Sign in as guest
-                </Button>
-              ) : (
-                <Button
-                  disabled
-                  style={{ marginTop: ".5em" }}
-                  variant="success"
-                >
-                  Loading... (takes ~10 seconds)
-                </Button>
-              )}
+              <Button 
+                variant="primary" 
+                type="submit"
+                disabled={signInLoading}>
+                {signInLoading ? 'Loading... (takes ~10 seconds)' : 'Sign in'}
+              </Button>
+              <Button
+                onClick={(e) => handleLogin(e, true)}
+                style={{ marginTop: ".5em" }}
+                variant="success"
+                disabled={signInGuestLoading}
+              >
+                {signInGuestLoading ? 'Loading... (takes ~10 seconds)' : 'Sign in as guest'}
+              </Button>
               <Form.Text className="link-to-register">
                 <Link to="/register">Don't have an account? Sign up here</Link>
               </Form.Text>
