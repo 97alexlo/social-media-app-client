@@ -49,8 +49,6 @@ function Login() {
   const handleLogin = (e, loginAsGuest) => {
     e.preventDefault();
     checkSignIn(loginAsGuest);
-    const emailError = document.querySelector(".email-error");
-    const passwordError = document.querySelector(".password-error");
 
     let isEmpty = false;
     if (!loginAsGuest) {
@@ -68,6 +66,7 @@ function Login() {
         },
       })
         .then((res) => {
+          setIsSignInGuestLoading(true)
           console.log(res);
           if (res.data.errors) {
             checkSignIn(loginAsGuest);
@@ -84,7 +83,7 @@ function Login() {
           console.log(err);
         });
     }
-    resetLoginButtonText()
+    return resetLoginButtonText()
   };
 
   return (
