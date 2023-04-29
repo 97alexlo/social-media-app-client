@@ -145,50 +145,45 @@ function PostCard({ post }) {
               </Card.Body>
             )}
             <Card.Body className="pt-2">
-              {post.posterId === uid &&
-                isUpdated === false && (
-                  <Card.Text className="mb-2" style={{ marginTop: "-15px" }}>
-                    {post.message}
-                  </Card.Text>
-                )}
-              {post.posterId === uid &&
-                isUpdated === true && (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      paddingBottom: "10px",
-                    }}
-                  >
-                    <Form.Group className="mb-0">
-                      <Form.Control
-                        as="textarea"
-                        style={{ height: "100px" }}
-                        defaultValue={post.message}
-                        onChange={(e) => setTextUpdate(e.target.value)}
-                      />
-                    </Form.Group>
-                  </div>
-                )}
-              {post.posterId === uid &&
-                showDeleteConfirm && (
-                  <Alert
-                    variant="danger"
-                    onClose={() => setShowDeleteConfirm(false)}
-                    dismissible
-                  >
-                    <p>Are you sure you want to delete this post?</p>
-                    <hr />
-                    <div className="d-flex justify-content-end">
-                      <Button onClick={deleteUserPost} variant="outline-danger">
-                        Delete
-                      </Button>
-                    </div>
-                  </Alert>
-                )}
-              {post.posterId !== uid && (
-                <Card.Text>{post.message}</Card.Text>
+              {post.posterId === uid && isUpdated === false && (
+                <Card.Text className="mb-2" style={{ marginTop: "-15px" }}>
+                  {post.message}
+                </Card.Text>
               )}
+              {post.posterId === uid && isUpdated === true && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    paddingBottom: "10px",
+                  }}
+                >
+                  <Form.Group className="mb-0">
+                    <Form.Control
+                      as="textarea"
+                      style={{ height: "100px" }}
+                      defaultValue={post.message}
+                      onChange={(e) => setTextUpdate(e.target.value)}
+                    />
+                  </Form.Group>
+                </div>
+              )}
+              {post.posterId === uid && showDeleteConfirm && (
+                <Alert
+                  variant="danger"
+                  onClose={() => setShowDeleteConfirm(false)}
+                  dismissible
+                >
+                  <p>Are you sure you want to delete this post?</p>
+                  <hr />
+                  <div className="d-flex justify-content-end">
+                    <Button onClick={deleteUserPost} variant="outline-danger">
+                      Delete
+                    </Button>
+                  </div>
+                </Alert>
+              )}
+              {post.posterId !== uid && <Card.Text>{post.message}</Card.Text>}
               <span style={{ display: "flex" }}>
                 {post.picture && (
                   <img
